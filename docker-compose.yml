@@ -1,0 +1,74 @@
+version: "3"
+services:
+  avrillo_api:
+    build:
+      args:
+        user: admin
+        uid: 1000
+      context: ./api/
+      dockerfile: Dockerfile
+    depends_on:
+      - avrillo_db
+    image: avrillo_api
+    container_name: avrillo_api
+    restart: unless-stopped
+    working_dir: /var/www/api/
+    volumes:
+      - ./:/var/www
+    networks:
+      - default
+
+  #Come back to this if there's time
+  #avrillo_client:
+  #  build:
+  #    context: ./client/
+  #    dockerfile: Dockerfile
+  #  ports:
+  #    - '8081:8080'
+  #  image: avrillo_client
+  #  container_name: avrillo_client
+  #  restart: unless-stopped
+  #  working_dir: /var/www/client/
+  #  volumes:
+  #    - '.:/app'
+  #    - '/app/node_modules'
+  #  networks:
+  #    - default
+
+  avrillo_db:
+    image: mysql:8.0
+    container_name: avrillo_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: avrillo_database
+      MYSQL_ROOT_PASSWORD: secret
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - default
+
+  nginx:
+    image: nginx:alpine
+    container_name: avrillo-nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    depends_on:
+      - avrillo_api
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
+
+#Considerations for improvement
+# - Redis installation & link between either/or/both client and api for caching & sessions.
+# - PHPredis extension and module installed on API container.
