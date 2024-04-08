@@ -35,5 +35,19 @@ class ApiAppTest extends TestCase
         $this->assertNotNull($appKey);
      }
 
+     /**
+     * It generates a new app and assigns it a unique access token using console command
+     * 
+     * @test
+     * @group ApiApp
+     */
+     public function it_can_generate_a_new_app_token_pair_via_console_command(){
+        $this->artisan('app:generate', ['name'=>'Test Application']);
+        $newApplication = APIApp::with('accessToken')->first();
+        
+        $this->assertTrue($newApplication->app_name === 'Test Application');
+        $this->assertNotNull($newApplication->app_access_id);
+        $this->assertNotNull($newApplication->accessToken->first()->secret_token);
+     }
      
 }
