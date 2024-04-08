@@ -13,4 +13,7 @@ class App extends Model
         'app_name',
         'app_access_id'
     ];
+    public function accessToken(): HasMany { 
+        return $this->hasMany(AccessToken::class);
+    }
 }
