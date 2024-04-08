@@ -18,7 +18,7 @@ class AccessTokenFactory extends Factory
     public function definition(): array
     {
         return [
-            'secret_token' => 'sc-'.bin2hex(random_bytes(32)),
+            'secret_token' => 'sk-'.bin2hex(random_bytes(32)),
             'active' => true
         ];
     }
