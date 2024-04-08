@@ -3,12 +3,12 @@
 namespace Tests\Feature\Auth\ApiApps;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\App as APIApp;
 
 class ApiAppTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic feature test example.
      */
@@ -28,8 +28,12 @@ class ApiAppTest extends TestCase
 
      public function it_generates_a_new_api_app_and_assigns_it_an_access_token(){
         $apiApp = APIApp::generate();
-        $token = $apiApp->accessToken->token;
+        $appKey = $apiApp->app_access_id;
+        $token = $apiApp->accessToken->first()->secret_token;
+
         $this->assertNotNull($token);
-        $this->assertNotNull($apiApp->api_app_id);
+        $this->assertNotNull($appKey);
      }
+
+     
 }
