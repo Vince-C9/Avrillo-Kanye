@@ -18,7 +18,8 @@ class AppFactory extends Factory
     {
         return [
             'app_name' => fake()->name(),
-            'app_access_id' => 'ap-'.fake()->randomNumber(9, true),
+            'app_access_id' => 'app-'.fake()->randomNumber(9, true),
+            'app_secret' => 'sk-'.bin2hex(random_bytes(32)),
         ];
     }
 }
