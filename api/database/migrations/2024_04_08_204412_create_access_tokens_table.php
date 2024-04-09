@@ -21,7 +21,7 @@ return new class extends Migration
         Schema::create('access_tokens', function (Blueprint $table) {
             $table->id();
             $table->integer('app_id');
-            $table->string('secret_token')->unique();
+            $table->string('access_token')->unique();
             $table->boolean('active')->default(true);
             $table->timestamps();
         });
