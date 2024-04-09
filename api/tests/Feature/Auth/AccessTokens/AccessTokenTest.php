@@ -26,7 +26,7 @@ class AccessTokenTest extends TestCase
             'access_token'=>'totallysecuresecrettoken123', 
             'app_id'=>$app->id
         ]);
-        $token = AccessToken::GenerateNewAccessToken($app);
+        $token = AccessToken::getAccessToken($app);
         $this->assertTrue($token === 'totallysecuresecrettoken123');
 
     }
@@ -39,7 +39,7 @@ class AccessTokenTest extends TestCase
      */
     public function it_creates_a_new_token_if_one_doesnt_exist(){
         $app = App::factory()->create(['id' => 1]);
-        $token = AccessToken::GenerateNewAccessToken($app);
+        AccessToken::GenerateNewAccessToken($app);
 
         $this->assertNotEmpty($app->accessToken->first()->access_token);
     }
