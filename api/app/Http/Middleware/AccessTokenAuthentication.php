@@ -52,7 +52,5 @@ class AccessTokenAuthentication
             report($t->getMessage());
             throw new Exception($t->getMessage(), (int)$t->getCode());
         }
-        
-        
     }
 }
