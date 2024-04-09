@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AccessTokenAuthentication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/health-check', function (Request $request) {
+Route::middleware(AccessTokenAuthentication::class)->get('/health-check', function (Request $request) {
     echo 'Site active';
 })->name("health-check");
