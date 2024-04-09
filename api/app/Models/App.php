@@ -14,7 +14,8 @@ class App extends Model
 
     protected $fillable = [
         'app_name',
-        'app_access_id'
+        'app_access_id',
+        'app_secret'
     ];
 
     public function accessToken(): HasMany { 
