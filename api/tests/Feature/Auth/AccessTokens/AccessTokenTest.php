@@ -62,4 +62,22 @@ class AccessTokenTest extends TestCase
         $this->assertNotEmpty($token);
         $this->assertTrue($token !== 'totallysecuresecrettoken123');
     }
+
+    
+    /**
+     * It generates an access token via the token route
+     *
+     * @test
+     * @group AccessTokens
+     */
+    public function it_generates_an_access_token_via_the_token_route(){
+        $app = App::factory()->create();
+
+        $response = $this->post(route('auth.token'), ['app_id'=>$app->app_access_id]);
+
+        $response->assertOk();
+        $response->assertSee('access_token');
+
+
+    }
 }
