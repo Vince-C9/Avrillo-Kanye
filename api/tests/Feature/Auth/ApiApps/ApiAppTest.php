@@ -34,7 +34,7 @@ class ApiAppTest extends TestCase
      public function it_generates_a_new_api_app_and_assigns_it_an_access_token(){
         $apiApp = APIApp::generate();
         $appKey = $apiApp->app_access_id;
-        $token = $apiApp->accessToken->first()->secret_token;
+        $token = $apiApp->accessToken->first()->access_token;
 
         $this->assertTrue(APIApp::count() === 1);
 
@@ -59,7 +59,7 @@ class ApiAppTest extends TestCase
 
         $this->assertTrue($newApplication->app_name === 'Test Application');
         $this->assertNotNull($newApplication->app_access_id);
-        $this->assertNotNull($newApplication->accessToken->first()->secret_token);
+        $this->assertNotNull($newApplication->accessToken->first()->access_token);
      }
      
 }

@@ -14,7 +14,8 @@ class App extends Model
 
     protected $fillable = [
         'app_name',
-        'app_access_id'
+        'app_access_id',
+        'app_secret'
     ];
 
     public function accessToken(): HasMany { 
@@ -31,12 +32,12 @@ class App extends Model
         $app = App::create([
             'app_name' => !empty($appName) ? $appName : self::generateRandomAppName(),
             'app_access_id' => 'app-'.self::getUniqueAppId(),
+            'app_secret' => 'sk-'.bin2hex(random_bytes(32))
         ]);
-        //Create a new access token for said app.
-        $app->accessToken()->create([
-            'secret_token' => 'sk-'.bin2hex(random_bytes(32)),
-        ]);
-
+        
+        //Create a new access token for said app.  This needs to be cryptographically strong
+        AccessToken::GenerateNewAccessToken($app);
+        
         //return the result
         return $app;
     }
