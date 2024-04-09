@@ -19,7 +19,7 @@ class AccessTokenFactory extends Factory
     public function definition(): array
     {
         return [
-            'secret_token' => 'sk-'.bin2hex(random_bytes(32)),
+            'access_token' => 'sk-'.bin2hex(random_bytes(32)),
             'last_accessed' => null,
             'expiration_date' => Carbon::now()->addHours(2), 
             'active' => true
