@@ -34,11 +34,10 @@ class App extends Model
             'app_access_id' => 'app-'.self::getUniqueAppId(),
             'app_secret' => 'sk-'.bin2hex(random_bytes(32))
         ]);
+        
         //Create a new access token for said app.  This needs to be cryptographically strong
-        $app->accessToken()->create([
-            'access_token' => AccessToken::GenerateNewAccessToken($app),
-        ]);
-
+        AccessToken::GenerateNewAccessToken($app);
+        
         //return the result
         return $app;
     }
