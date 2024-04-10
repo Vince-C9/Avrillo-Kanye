@@ -43,7 +43,13 @@ class QuotesTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('quote.get'), ['Authorization' => "Bearer ".$this->token]);
+        $response = $this->get(
+            route('quote.get', ['implementation'=>'api']), 
+            [
+                'Authorization' => "Bearer ".$this->token, 
+                'app-id'=>$this->apiApp->app_access_id
+            ]
+        );
 
         //It sent 5 requests for quotes
         Http::assertSentCount(5);
