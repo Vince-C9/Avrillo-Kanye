@@ -41,7 +41,7 @@ class AccessTokenAuthentication
             $existingAccessToken = AccessToken::getAccessToken(App::whereId($applicationId)->firstOrFail());
             //If existing access token and token matches, approve access.
             if($existingAccessToken && $existingAccessToken === $accessToken){
-                return $next($request);
+                return $next($request)->header('Content-Type', 'application/json');
             }  
             
             //If access token is not present, throw 304 error
