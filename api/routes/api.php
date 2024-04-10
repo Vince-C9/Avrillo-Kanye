@@ -24,7 +24,7 @@ Route::middleware(AccessTokenAuthentication::class)->get('/health-check', functi
 
 //Auth routes
 Route::prefix('quote.')->name('quote.')->middleware(AccessTokenAuthentication::class)->group(function(){
-    Route::get('quote', [QuoteController::class, 'index'])->name('getQuote');
+    Route::get('quote', [QuoteController::class, 'index'])->name('get');
 });
 
 
