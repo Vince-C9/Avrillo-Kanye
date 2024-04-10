@@ -70,12 +70,19 @@ class AccessTokenTest extends TestCase
      * @test
      * @group AccessTokens
      */
-    public function it_generates_an_access_token_via_the_token_route(){
+    public function it_generates_an_access_token_via_the_token_route() {
         $app = App::factory()->create();
-
+        //Post with secret and app in header
         $response = $this->post(route('auth.token'), [],['Authorization' => base64_encode($app->app_access_id.'='.$app->app_secret)]);
 
+        //Parse the token from the response
+        $token = json_decode($response->content())->access_token;
+
+        //200 response
         $response->assertOk();
+        //Access token in content
         $response->assertSee('access_token');
+        //Access token in database
+        $this->assertCount(1, AccessToken::whereAccessToken($token)->get());
     }
 }
