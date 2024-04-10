@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccessTokensController;
+use App\Http\Controllers\QuoteController;
 use App\Http\Middleware\AccessTokenAuthentication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,8 +23,8 @@ Route::middleware(AccessTokenAuthentication::class)->get('/health-check', functi
 
 
 //Auth routes
-Route::prefix('auth')->name('auth.')->middleware(AccessTokenAuthentication::class)->group(function(){
-    
+Route::prefix('quote.')->name('quote.')->middleware(AccessTokenAuthentication::class)->group(function(){
+    Route::get('quote', [QuoteController::class, 'index'])->name('getQuote');
 });
 
 
