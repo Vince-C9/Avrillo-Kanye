@@ -38,7 +38,7 @@ class AccessTokenAuthentication
             }
 
             //Get existing access token owned by the account ID
-            $existingAccessToken = AccessToken::getAccessToken(App::whereId($applicationId)->firstOrFail());
+            $existingAccessToken = AccessToken::getAccessToken(App::whereAppAccessId($applicationId)->firstOrFail());
             //If existing access token and token matches, approve access.
             if($existingAccessToken && $existingAccessToken === $accessToken){
                 return $next($request)->header('Content-Type', 'application/json');
