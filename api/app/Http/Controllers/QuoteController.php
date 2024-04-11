@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\QuoteService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Cache;
 use Throwable;
 
 class QuoteController extends Controller
@@ -31,6 +31,17 @@ class QuoteController extends Controller
             report($t->getMessage());
             throw $t;
         }
+    }
+
+    /**
+     * Clears cache before running the index method again.
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function refresh(Request $request){
+        Cache::forget('quotes');
+        return $this->index($request);
     }
 
     

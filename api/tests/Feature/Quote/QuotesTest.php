@@ -105,4 +105,51 @@ class QuotesTest extends TestCase
         
     }
 
+    /**
+     * Hitting the refresh endpoint will clear cache and generate new quotes.
+     *
+     * @test
+     * @group Quotes
+     */
+    public function it_clears_stored_quotes_and_refreshes_them_if_the_refresh_endpoint_is_hit(){
+
+        $quoteService = new QuoteService();
+        //Setup cached quotes
+        $quoteService->cache([
+            'Kanye Quote 1',
+            'Kanye Quote 2',
+            'Kanye Quote 3',
+            'Kanye Quote 4',
+            'Kanye Quote 5'
+        ]);
+
+        $response = $this->get(
+            route('quote.refresh', ['implementation'=>'cache']), 
+            [
+                'Authorization' => "Bearer ".$this->token, 
+                'app-id'=>$this->apiApp->app_access_id
+            ]
+        );
+
+        //It sent 5 requests for quotes
+        $response->assertOk();
+        $response->assertSee('quotes');
+        $response->assertJsonIsArray('quotes');
+
+        $quotes = json_decode($response->content())->quotes;
+        
+        $cachedQuotes = json_decode(Cache::get('quotes'));
+
+        $this->assertCount(5, $quotes);
+        $this->assertCount(5, $cachedQuotes);
+        $this->assertTrue(
+            $quotes[0]!=='Kanye Quote 1' &&
+            $quotes[1]!=='Kanye Quote 2' &&
+            $quotes[2]!=='Kanye Quote 3' &&
+            $quotes[3]!=='Kanye Quote 4' &&
+            $quotes[4]!=='Kanye Quote 5' 
+        );
+        
+    }
+
 }
