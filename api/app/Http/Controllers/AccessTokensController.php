@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 
 class AccessTokensController extends Controller
 {
+    /**
+     * Generates access token for provided app ID
+     *
+     * @param AccessTokenRequest $request
+     * @return void
+     */
     public function token(AccessTokenRequest $request) {
         $token = AccessToken::generateNewAccessToken(App::whereAppAccessId($request->input('app_id'))->first());
         return response()->json([

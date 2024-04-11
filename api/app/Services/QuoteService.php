@@ -7,6 +7,7 @@ use App\Services\Kanye\KanyeRestImplementation;
 use App\Services\Kanye\QuoteCacheImplementation;
 use Illuminate\Support\Facades\Cache;
 use Throwable;
+use App\KanyeQuotes\Quotes;
 
 class QuoteService { 
     /**
@@ -22,12 +23,11 @@ class QuoteService {
 
         $quotes = Cache::get('quotes');
         if(!empty($quotes)){
-            $quoteImplementation = new QuoteCacheImplementation();
+            $quotes = Quotes::driver('cache')->quote($numberOfQuotes);
         }else{
-            $quoteImplementation = new KanyeRestImplementation();
+            $quotes = Quotes::driver('restful')->quote($numberOfQuotes);
         }
 
-        $quotes = $quoteImplementation->quote($numberOfQuotes);
         return $quotes;
     }
 
