@@ -64,5 +64,29 @@ class QuotesTest extends TestCase
         $this->assertTrue(Quote::whereQuote($quotes[0])->count() ===1 );
     }
 
+    /**
+     * It calls the endpoint to generate quotes and returns 5 from the database (if they exist!).
+     *
+     * @test
+     * @group Quotes
+     */
+    public function it_generates_kanye_quotes_from_the_database(){
+        $response = $this->get(
+            route('quote.get', ['implementation'=>'database']), 
+            [
+                'Authorization' => "Bearer ".$this->token, 
+                'app-id'=>$this->apiApp->app_access_id
+            ]
+        );
+
+        //It sent 5 requests for quotes
+        $response->assertOk();
+        $response->assertSee('quotes');
+        $response->assertJsonIsArray('quotes');
+
+        $quotes = json_decode($response->content())->quotes;
+        $this->assertCount(5, $quotes);
+        $this->assertTrue(Quote::whereQuote($quotes[0])->count() === 1 );
+    }
 
 }
