@@ -137,6 +137,7 @@ class QuotesTest extends TestCase
      * @group Quotes
      */
     public function it_sends_an_error_message_if_there_are_no_quotes_available(){
+        //No prepopulation this time!
         $response = $this->get(
             route('quote.get', ['implementation'=>'database']), 
             [
@@ -145,7 +146,9 @@ class QuotesTest extends TestCase
             ]
         );
 
-        dd($response);
+        $response->assertSee(Config::get('kanye.no_quotes_message'));
+        $response->assertStatus(404);
+        
     }
 
 }
