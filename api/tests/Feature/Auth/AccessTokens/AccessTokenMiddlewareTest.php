@@ -68,7 +68,7 @@ class AccessTokenMiddlewareTest extends TestCase
         $accessToken = AccessToken::generateNewAccessToken($app);
 
         $request = Request::create(route('health-check'));
-        $request->headers->set('app-id', $app->id);
+        $request->headers->set('app-id', $app->app_access_id);
         $request->headers->set('Authorization', 'Bearer '.$accessToken);
 
         $next = function() {

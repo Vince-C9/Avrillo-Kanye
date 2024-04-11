@@ -3,8 +3,7 @@
 namespace App\Services\Kanye;
 
 use App\Interfaces\KanyeQuoteInterface;
-use Illuminate\Support\Facades\Cache;
-use App\Models\Quote;
+use App\Services\QuoteService;
 
 /**
  * I'm starting to run out of time, so this one has been done a little sloppily.
@@ -21,6 +20,6 @@ class QuoteCacheImplementation implements KanyeQuoteInterface
      * @return array|null
      */
     public function quote(int $amount) {
-        return Quote::get($amount);
+        return QuoteService::getFromCache($amount);
     }
 }

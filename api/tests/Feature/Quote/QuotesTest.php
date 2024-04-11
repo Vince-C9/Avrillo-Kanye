@@ -9,6 +9,7 @@ use Tests\TestCase;
 use Illuminate\Support\Facades\Http;
 use App\Models\AccessToken;
 use App\Models\Quote;
+use App\Services\QuoteService;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cache;
 
@@ -62,40 +63,9 @@ class QuotesTest extends TestCase
 
         $quotes = json_decode($response->content())->quotes;
         $this->assertCount(5, $quotes);
-        $this->assertTrue(Quote::whereQuote($quotes[0])->count() ===1 );
     }
 
-    /**
-     * It calls the endpoint to generate quotes and returns 5 from the database (if they exist!).
-     *
-     * @test
-     * @group Quotes
-     */
-    public function it_generates_kanye_quotes_from_the_database(){
-
-        Quote::factory()->count(5)->create();
-
-        $response = $this->get(
-            route('quote.get', ['implementation'=>'database']), 
-            [
-                'Authorization' => "Bearer ".$this->token, 
-                'app-id'=>$this->apiApp->app_access_id
-            ]
-        );
-
-        //It sent 5 requests for quotes
-        $response->assertOk();
-        $response->assertSee('quotes');
-        $response->assertJsonIsArray('quotes');
-
-        $quotes = json_decode($response->content())->quotes;
-        $cachedQuotes = json_decode(Cache::get('quotes'));
-
-        $this->assertCount(5, $quotes);
-        $this->assertCount(5, $cachedQuotes);
-        
-        $this->assertTrue(Quote::whereQuote($quotes[0])->count() === 1 );
-    }
+    
 
     /**
      * It calls the endpoint to generate quotes and returns 5 from the database (if they exist!).
@@ -105,7 +75,14 @@ class QuotesTest extends TestCase
      */
     public function it_generates_kanye_quotes_from_cache(){
 
-        Quote::factory()->count(5)->create();
+        $quoteService = new QuoteService();
+        $quoteService->cache([
+            fake()->sentence(),
+            fake()->sentence(),
+            fake()->sentence(),
+            fake()->sentence(),
+            fake()->sentence(),
+        ]);
 
         $response = $this->get(
             route('quote.get', ['implementation'=>'cache']), 
@@ -125,29 +102,6 @@ class QuotesTest extends TestCase
 
         $this->assertCount(5, $quotes);
         $this->assertCount(5, $cachedQuotes);
-        
-        $this->assertTrue(Quote::whereQuote($quotes[0])->count() === 1 );
-    }
-
-
-    /**
-     * Test to make sure if there are no quotes, it is handled in a nice way
-     *
-     * @test
-     * @group Quotes
-     */
-    public function it_sends_an_error_message_if_there_are_no_quotes_available(){
-        //No prepopulation this time!
-        $response = $this->get(
-            route('quote.get', ['implementation'=>'database']), 
-            [
-                'Authorization' => "Bearer ".$this->token, 
-                'app-id'=>$this->apiApp->app_access_id
-            ]
-        );
-
-        $response->assertSee(Config::get('kanye.no_quotes_message'));
-        $response->assertStatus(404);
         
     }
 

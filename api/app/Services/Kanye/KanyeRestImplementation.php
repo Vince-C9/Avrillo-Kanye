@@ -6,7 +6,7 @@ use App\Interfaces\KanyeQuoteInterface;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\Pool;
 use Illuminate\Support\Facades\Config;
-use App\Models\Quote;
+use App\Services\QuoteService;
 
 class KanyeRestImplementation implements KanyeQuoteInterface
 {
@@ -53,12 +53,10 @@ class KanyeRestImplementation implements KanyeQuoteInterface
         foreach($apiResponses as $response){
             $quote = json_decode($response->body())->quote;
             $quotes[] = $quote;
-            //Store in database if doesn't exist already
-            Quote::firstOrCreate([
-                'quote' => $quote
-            ]);
         }
-        
+
+        $quoteService = new QuoteService();
+        $quoteService->cache($quotes);
         //Return quotes
         return $quotes;
     }
