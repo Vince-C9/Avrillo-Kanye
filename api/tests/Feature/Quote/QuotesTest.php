@@ -128,4 +128,24 @@ class QuotesTest extends TestCase
         
         $this->assertTrue(Quote::whereQuote($quotes[0])->count() === 1 );
     }
+
+
+    /**
+     * Test to make sure if there are no quotes, it is handled in a nice way
+     *
+     * @test
+     * @group Quotes
+     */
+    public function it_sends_an_error_message_if_there_are_no_quotes_available(){
+        $response = $this->get(
+            route('quote.get', ['implementation'=>'database']), 
+            [
+                'Authorization' => "Bearer ".$this->token, 
+                'app-id'=>$this->apiApp->app_access_id
+            ]
+        );
+
+        dd($response);
+    }
+
 }
