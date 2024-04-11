@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\AccessToken;
 use App\Models\Quote;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Cache;
 
 class QuotesTest extends TestCase
 {
@@ -71,6 +72,9 @@ class QuotesTest extends TestCase
      * @group Quotes
      */
     public function it_generates_kanye_quotes_from_the_database(){
+
+        Quote::factory()->count(5)->create();
+
         $response = $this->get(
             route('quote.get', ['implementation'=>'database']), 
             [
@@ -85,7 +89,11 @@ class QuotesTest extends TestCase
         $response->assertJsonIsArray('quotes');
 
         $quotes = json_decode($response->content())->quotes;
+        $cachedQuotes = json_decode(Cache::get('quotes'));
+
         $this->assertCount(5, $quotes);
+        $this->assertCount(5, $cachedQuotes);
+        
         $this->assertTrue(Quote::whereQuote($quotes[0])->count() === 1 );
     }
 
