@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Http;
 use App\Models\AccessToken;
+use App\Models\Quote;
 use Illuminate\Support\Facades\Config;
 
 class QuotesTest extends TestCase
@@ -57,6 +58,10 @@ class QuotesTest extends TestCase
         $response->assertOk();
         $response->assertSee('quotes');
         $response->assertJsonIsArray('quotes');
+
+        $quotes = json_decode($response->content())->quotes;
+        $this->assertCount(5, $quotes);
+        $this->assertTrue(Quote::whereQuote($quotes[0])->count() ===1 );
     }
 
 
