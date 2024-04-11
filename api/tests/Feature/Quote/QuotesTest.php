@@ -37,10 +37,11 @@ class QuotesTest extends TestCase
      * @group Quotes
      */
     public function it_generates_kanye_quotes_from_the_kanye_api(){
+        //Fake the HTTP response.
         Http::fake([
-            Config::get('kanye.api_endpoint') => Http::response([
-                ['quote'], 200, ['Headers'],
-            ])
+            Config::get('kanye.api_endpoint') => Http::response(
+                json_encode(['quote'=> fake()->sentence()]), 200,[]
+            )
         ]);
 
         $response = $this->get(
