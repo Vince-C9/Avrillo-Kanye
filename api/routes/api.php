@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AccessTokensController;
+use App\Http\Controllers\QuoteController;
+use App\Http\Middleware\AccessTokenAuthentication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +17,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(AccessTokenAuthentication::class)->get('/health-check', function (Request $request) {
+    echo 'Site active';
+})->name("health-check");
+
+
+//Auth routes
+Route::prefix('quote.')->name('quote.')->middleware(AccessTokenAuthentication::class)->group(function(){
+    Route::get('quote', [QuoteController::class, 'index'])->name('get');
 });
+
+
+//open routes
+Route::post('token', [AccessTokensController::class, 'token'])->name('auth.token');

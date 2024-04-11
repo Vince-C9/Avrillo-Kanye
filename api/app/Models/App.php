@@ -36,7 +36,7 @@ class App extends Model
         ]);
         
         //Create a new access token for said app.  This needs to be cryptographically strong
-        AccessToken::GenerateNewAccessToken($app);
+        AccessToken::generateNewAccessToken($app);
         
         //return the result
         return $app;

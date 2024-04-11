@@ -32,13 +32,13 @@ class AccessToken extends Model
     * @param APIApp $app
     * @return string
     */
-    public static function GenerateNewAccessToken(APIApp $app): string {
+    public static function generateNewAccessToken(APIApp $app): string {
         
         $token = bin2hex(random_bytes(64));
         $uniqueToken = AccessToken::whereAppId($app->id)->where('access_token', $token)->count();
         //If this token has already been used in the database, re-run
         if($uniqueToken > 0){
-            return Self::GenerateNewAccessToken($app);
+            return Self::generateNewAccessToken($app);
         }
         // add new token to the database.
         $app->accessToken()->create([
