@@ -19,21 +19,16 @@ services:
       - default
 
   #Come back to this if there's time
-  #avrillo_app_client:
-  #  build:
-  #    context: ./client/
-  #    dockerfile: Dockerfile
-  #  ports:
-  #    - '8081:8080'
-  #  image: avrillo_app_client
-  #  container_name: avrillo_app_client
-  #  restart: unless-stopped
-  #  working_dir: /var/www/client/
-  #  volumes:
-  #    - '.:/app'
-  #    - '/app/node_modules'
-  #  networks:
-  #    - default
+  avrillo_app_client:
+    container_name: avrillo_app_client
+    image: node:lts
+    working_dir: /var/www/html/app/
+    entrypoint: /bin/bash
+    expose:
+      - 8001
+    volumes:
+      - ./client/:/var/www/html/app
+    tty: true
 
   avrillo_app_db:
     image: mysql:8.0

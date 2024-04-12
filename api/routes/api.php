@@ -23,13 +23,13 @@ Route::middleware(AccessTokenAuthentication::class)->get('/health-check', functi
 
 
 //Auth routes
-Route::prefix('quote.')->name('quote.')->middleware(AccessTokenAuthentication::class)->group(function(){
-    Route::get('quote', [QuoteController::class, 'index'])->name('get');
+Route::prefix('quote')->name('quote.')->middleware(AccessTokenAuthentication::class)->group(function(){
+    Route::get('/', [QuoteController::class, 'index'])->name('get');
     /**
      * Couldn't settle on whether DESTROY fitted here.  
      * I've gone for refresh as it affords a little more readability I feel.
      */
-    Route::get('quote/refresh', [QuoteController::class, 'refresh'])->name('refresh');
+    Route::get('/refresh', [QuoteController::class, 'refresh'])->name('refresh');
 });
 
 
