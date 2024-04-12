@@ -51,6 +51,8 @@ That's it!  Now you can access Kanyes quotes.
 
 To begin with it won't display any quotes.  You can choose `get quotes` to load quotes from cache.  If none exist in cache to begin with, then it will favour the restful API, so the first call may be slower than normal.  You may also find speed varies depending how much ram you've given Docker. 
 
+I've not used Dockerx so if you're running a mac on M1 then you might find that the app runs slow due to the emulation of ARM firmwre.
+
 You can click `refresh quotes` to generate and save another 5 quotes into cache.
 
 
