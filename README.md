@@ -9,6 +9,9 @@ Apologies for the delay on this one, I've been quite ill.  I have focused more o
 
 3.  Doc Blocks - I've tried where possible to add these in, but due to time constraints, it may have slipped, particularly where the functionality seemed easy enough to follow.
 
+4.  Unit tests - I've not written any of these, as time didn't allow for it.  Only feature tests I'm afraid.
+
+![image](https://github.com/Vince-C9/Avrillo-Kanye/assets/78065068/378c4464-be7c-4029-83bd-d00dc288faba)
 
 ## Running the app.
 
@@ -32,6 +35,10 @@ The app runs in docker and makes use of docker compose for easy of deployment.  
 * Type `npm run dev`
 * This should start a vite/vue server to serve as your front end.
 * You can visit `http://localhost:8001/` now but you may get 'access denied' as we haven't generated any keys for you yet.
+
+![image](https://github.com/Vince-C9/Avrillo-Kanye/assets/78065068/dca203e7-20f5-4c16-83f5-82c714a178c4)
+
+
 * Generate your secret and app id by changing directory to root.
 * type `docker-compose exec avrillo_app_api php artisan app:generate "test app"`.  The name isn't important really.  After a moment or two you'll be issued with a client ID and a secret.
 * Navigate to the client folder, either in your cli or IDE, and open the `.env` file.
@@ -42,3 +49,6 @@ That's it!  Now you can access Kanyes quotes.
 To begin with it won't display any quotes.  You can choose `get quotes` to load quotes from cache.  If none exist in cache to begin with, then it will favour the restful API, so the first call may be slower than normal.  You may also find speed varies depending how much ram you've given Docker. 
 
 You can click `refresh quotes` to generate and save another 5 quotes into cache.
+
+
+![image](https://github.com/Vince-C9/Avrillo-Kanye/assets/78065068/08872316-9e37-4ec2-b90f-d72c3ca95ef5)
