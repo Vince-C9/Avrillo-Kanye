@@ -30,7 +30,7 @@ class GenerateNewAppIdSecretPair extends Command
         $name= $this->argument('name');
         $apiApp = APIApp::generate($name);
         $appKey = $apiApp->app_access_id;
-        $token = $apiApp->accessToken->first()->access_token;
+        $token = $apiApp->app_secret;
         $this->info("New key generated for '$name'");
         $this->info('-----');
         $this->info(' ');
