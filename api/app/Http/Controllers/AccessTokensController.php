@@ -16,7 +16,11 @@ class AccessTokensController extends Controller
      * @return void
      */
     public function token(AccessTokenRequest $request) {
-        $token = AccessToken::generateNewAccessToken(App::whereAppAccessId($request->input('app_id'))->first());
+        $token = AccessToken::getAccessToken(App::whereAppAccessId($request->input('app_id'))->first());
+        if(empty($token)){
+            $token = AccessToken::generateNewAccessToken(App::whereAppAccessId($request->input('app_id'))->first());
+        }
+        
         return response()->json([
             'access_token'=>$token
         ]);
