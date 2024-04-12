@@ -19,6 +19,7 @@ Apologies for the delay on this one, I've been quite ill.  I have focused more o
 The app runs in docker and makes use of docker compose for easy of deployment.  The back end is a standard Laravel API while the front end will be a dev version of a vue 3 + vite app (although the vite functionality is limited!)
 
 1. Spinning it up:
+   
 1a. Back End
 
 * Open windows power shell / terminal / your choice of console, and navigate to the root of the project.
