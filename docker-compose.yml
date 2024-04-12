@@ -1,6 +1,6 @@
 version: "3"
 services:
-  avrillo_api:
+  avrillo_app_api:
     build:
       args:
         user: admin
@@ -8,9 +8,9 @@ services:
       context: ./api/
       dockerfile: Dockerfile
     depends_on:
-      - avrillo_db
-    image: avrillo_api
-    container_name: avrillo_api
+      - avrillo_app_db
+    image: avrillo_app_api
+    container_name: avrillo_app_api
     restart: unless-stopped
     working_dir: /var/www/api/
     volumes:
@@ -19,28 +19,23 @@ services:
       - default
 
   #Come back to this if there's time
-  #avrillo_client:
-  #  build:
-  #    context: ./client/
-  #    dockerfile: Dockerfile
-  #  ports:
-  #    - '8081:8080'
-  #  image: avrillo_client
-  #  container_name: avrillo_client
-  #  restart: unless-stopped
-  #  working_dir: /var/www/client/
-  #  volumes:
-  #    - '.:/app'
-  #    - '/app/node_modules'
-  #  networks:
-  #    - default
+  avrillo_app_client:
+    container_name: avrillo_app_client
+    image: node:lts
+    working_dir: /var/www/html/app/
+    entrypoint: /bin/bash
+    expose:
+      - 8001
+    volumes:
+      - ./client/:/var/www/html/app
+    tty: true
 
-  avrillo_db:
+  avrillo_app_db:
     image: mysql:8.0
-    container_name: avrillo_db
+    container_name: avrillo_app_db
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: avrillo_database
+      MYSQL_DATABASE: avrillo_app_database
       MYSQL_ROOT_PASSWORD: secret
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
@@ -53,7 +48,7 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: avrillo-nginx
+    container_name: avrillo_app_nginx
     restart: unless-stopped
     ports:
       - 8000:80
@@ -61,7 +56,7 @@ services:
       - ./:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d/
     depends_on:
-      - avrillo_api
+      - avrillo_app_api
     networks:
       - default
 

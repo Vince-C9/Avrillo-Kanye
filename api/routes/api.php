@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AccessTokensController;
+use App\Http\Controllers\QuoteController;
+use App\Http\Middleware\AccessTokenAuthentication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +17,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(AccessTokenAuthentication::class)->get('/health-check', function (Request $request) {
+    echo 'Site active';
+})->name("health-check");
+
+
+//Auth routes
+Route::prefix('quote')->name('quote.')->middleware(AccessTokenAuthentication::class)->group(function(){
+    Route::get('/', [QuoteController::class, 'index'])->name('get');
+    /**
+     * Couldn't settle on whether DESTROY fitted here.  
+     * I've gone for refresh as it affords a little more readability I feel.
+     */
+    Route::get('/refresh', [QuoteController::class, 'refresh'])->name('refresh');
 });
+
+
+//open routes
+Route::post('token', [AccessTokensController::class, 'token'])->name('auth.token');
