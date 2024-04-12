@@ -32,6 +32,8 @@ The app runs in docker and makes use of docker compose for easy of deployment.  
 1b. Front End
 
 * CD into the client directory.
+* note that you may need to install node locally here.  I use nvm for Windows.  this has been built using node 20.
+* run `npm install` to install node packages
 * Type `npm run dev`
 * This should start a vite/vue server to serve as your front end.
 * You can visit `http://localhost:8001/` now but you may get 'access denied' as we haven't generated any keys for you yet.
