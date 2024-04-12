@@ -44,7 +44,7 @@ The app runs in docker and makes use of docker compose for easy of deployment.  
 
 * Generate your secret and app id by changing directory to root.
 * type `docker-compose exec avrillo_app_api php artisan app:generate "test app"`.  The name isn't important really.  After a moment or two you'll be issued with a client ID and a secret.
-* Navigate to the client folder, either in your cli or IDE, and open the `.env` file.
+* Navigate to the client folder, either in your cli or IDE, and open the `.env`(copy this from `.env_example` if you haven't already) file.
 * Update the values with your newly generated keys.
 
 That's it!  Now you can access Kanyes quotes.
