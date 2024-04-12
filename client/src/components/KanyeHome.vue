@@ -132,8 +132,8 @@ export default defineComponent({
       })
       .catch((err) => {
         //I know this is bad, but I'd like to get this over the line for you by tomorrow! :) 
-        alert(err);
         this.accessDenied=true;
+        this.awaitingApi = false;
       });
     },
     getQuotes: function(){
@@ -157,6 +157,7 @@ export default defineComponent({
       .catch((err) => {
         //I know this is bad, but I'd like to get this over the line for you by tomorrow! :) 
         alert(err);
+        this.awaitingApi = false;
       });
 
     },
@@ -181,6 +182,7 @@ export default defineComponent({
       .catch((err) => {
         //I know this is bad, but I'd like to get this over the line for you by tomorrow! :) 
         alert(err);
+        this.awaitingApi = false;
       });
     }
   }
